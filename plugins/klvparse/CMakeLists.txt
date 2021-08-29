@@ -1,0 +1,11 @@
+set(TARGET klvparse)
+set(VERSION 1.0.0)
+
+file(GLOB "${TARGET}_SRC_FILES" "*.c" "*.cpp")
+add_library("${TARGET}" SHARED ${${TARGET}_SRC_FILES})
+target_compile_definitions("${TARGET}" PRIVATE VERSION="${VERSION}")
+target_include_directories("${TARGET}" PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
+target_link_libraries("${TARGET}" PRIVATE PkgConfig::GST)
+target_link_libraries("${TARGET}" PRIVATE nlohmann_json)
+pkg_get_variable(INSTALL_DIR "gstreamer-1.0" "pluginsdir")
+install(TARGETS "${TARGET}" LIBRARY DESTINATION "${INSTALL_DIR}")
