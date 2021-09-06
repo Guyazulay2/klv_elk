@@ -2,9 +2,11 @@ import json
 from elasticsearch import Elasticsearch
 elastic_client = Elasticsearch(hosts=["http://elastic:changeme@localhost:9200"])
 from time import sleep
-from datetime import datetime
+import datetime
 import os
 import argparse
+d_date = datetime.datetime.now()
+reg_format_date = d_date.strftime("%Y-%m-%d")
 
 
 def import_gst():
@@ -40,11 +42,12 @@ def start_pipeline():
             print('Error: %s: %s\n' % (err, debug))
         return True
 
+
+
     def on_klv_buffer(data):
-        res = elastic_client.index(index='new_index',doc_type="_doc", id="1", body=data)
+
+        res = elastic_client.index(index='new_index', id=reg_format_date, body=data)
         print(res['result'],res)
-
-
         # print(data)
         
 
